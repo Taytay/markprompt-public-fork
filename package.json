@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "supabase_db_reset": "supabase db reset",
+    "supabase_create_types_local": "supabase gen types typescript --local --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "^0.2.2",
@@ -47,6 +49,7 @@
     "clsx": "^1.2.1",
     "common-tags": "^1.8.2",
     "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "eventsource-parser": "^0.1.0",
@@ -77,6 +80,7 @@
     "react-wrap-balancer": "^0.4.0",
     "remark-gfm": "^3.0.1",
     "stripe": "^11.15.0",
+    "supabase": "^1.46.5",
     "swr": "^2.1.0",
     "ts-is-present": "^1.2.2",
     "turndown": "^7.1.1",

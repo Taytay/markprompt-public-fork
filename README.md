@@ -35,17 +35,36 @@ Markprompt is built on top of the following stack:
 
 ### Supabase
 
-Supabase is used for storage and auth, and if self-hosting, you will need to set it up on the [Supabase admin console](https://app.supabase.com/).
+You'll need a Supabase account and the [supabase CLI](https://supabase.com/docs/guides/cli). 
+To set up a new Supabase project with this repo, follow these instructions:
+If you haven't already, sign up at Supabase and create a new project.
 
-#### Schema
+1. Clone this repo
+2. `yarn install` (This repo uses yarn)
+3. (The repo has already been initialized to use Supabase, so no need to `supabase init`)
+4. If you haven't already, sign up at Supabase and create a new project.
+5. `supabase project create`
+6. `supabase start`
+7. Once the project is created, go to the Project Settings and find the API URL and Public API Key. 
 
-The schema is defined in [schema.sql](https://github.com/motifland/markprompt/blob/main/config/schema.sql). Create a Supabase database and paste the content of this file into the SQL editor. Then run the Typescript types generation script using:
+### UpStash
 
+1. Create an account at [Upstash](https://upstash.com/).
+
+### Environment variables:
+
+1. In the root of the repo, copy `.env.example` to `.env` and fill in the supabase and UpStash and OpenAI environment variables.
+
+### Database Schema
+
+You need to create the local database schema and apply migrations:
+1. `yarn run supabase_db_reset`
+(The schema is defined as the first migration step in `supabase/migrations/20230401212256_init.sql`.)
+
+2. To update the types after making a schema change:
 ```sh
-npx supabase gen types typescript --project-id <supabase-project-id> --schema public > types/supabase.ts
+yarn run supabase_create_types_local
 ```
-
-where `<supabase-project-id>` is the id of your Supabase project.
 
 #### Auth provider
 
