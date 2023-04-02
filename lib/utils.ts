@@ -128,18 +128,20 @@ export const getTimeIntervals = (
   return { startTimestamp, endTimestamp, timeIntervals };
 };
 
-export const getOrigin = (subdomain?: string) => {
-  const hostWithMaybeSubdomain = getHost(subdomain);
-  return process.env.NODE_ENV === 'development'
-    ? `http://${hostWithMaybeSubdomain}`
-    : `https://${hostWithMaybeSubdomain}`;
+export const getOrigin = (subdomain?: string, forceProduction?: boolean) => {
+  const hostWithMaybeSubdomain = getHost(subdomain, forceProduction);
+  const schema =
+    forceProduction || process.env.NODE_ENV === 'production'
+      ? 'https://'
+      : 'http://';
+  return `${schema}${hostWithMaybeSubdomain}`;
 };
 
-export const getHost = (subdomain?: string) => {
+export const getHost = (subdomain?: string, forceProduction?: boolean) => {
   const host =
-    process.env.NODE_ENV === 'development'
-      ? 'localhost:3000'
-      : process.env.NEXT_PUBLIC_APP_HOSTNAME;
+    forceProduction || process.env.NODE_ENV === 'production'
+      ? process.env.NEXT_PUBLIC_APP_HOSTNAME
+      : 'localhost:3000';
   return subdomain ? `${subdomain}.${host}` : host;
 };
 
@@ -389,8 +391,14 @@ export const stringToModel = (param?: string): OpenAIModelIdWithType => {
   }
 };
 
-export const isSupportedExtension = (path: string) => {
+const isSupportedExtension = (path: string) => {
   return /\.(md|mdx|mdoc|html|txt)$/.test(path);
+};
+
+export const shouldIncludeFileWithPath = (path: string) => {
+  return (
+    !path.startsWith('.') && !path.includes('/.') && isSupportedExtension(path)
+  );
 };
 
 export const getNameFromPath = (path: string) => {
