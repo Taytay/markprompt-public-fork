@@ -98,9 +98,13 @@ const TrainingContextProvider = (props: PropsWithChildren) => {
 
       setErrors([]);
 
-      const checksums: { [key: FileData['path']]: string } = await getChecksums(
+      let checksums: { [key: FileData['path']]: string } = (await getChecksums(
         project.id,
-      );
+      ));
+      if (!checksums){
+        checksums = {};
+        await setChecksums(project.id, checksums);
+      }
 
       for (let i = 0; i < numFiles; i++) {
         if (stopFlag.current) {
