@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "supabase_db_local_reset": "supabase db reset",
+    "supabase_db_push_migrations_to_remote": "supabase db push",
+    "supabase_create_types_local": "supabase gen types typescript --local --schema public > types/supabase.ts",
+    "supabase": "supabase"
   },
   "dependencies": {
     "@markdoc/markdoc": "^0.2.2",
@@ -47,6 +51,7 @@
     "clsx": "^1.2.1",
     "common-tags": "^1.8.2",
     "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "eventsource-parser": "^0.1.0",
@@ -62,7 +67,7 @@
     "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.1",
-    "next": "13.2.3",
+    "next": "13.2.4",
     "next-mdx-remote": "^4.4.1",
     "next-themes": "^0.2.1",
     "octokit": "^2.0.14",
@@ -78,6 +83,7 @@
     "react-wrap-balancer": "^0.4.0",
     "remark-gfm": "^3.0.1",
     "stripe": "^11.15.0",
+    "supabase": "^1.46.5",
     "swr": "^2.1.0",
     "ts-is-present": "^1.2.2",
     "turndown": "^7.1.1",

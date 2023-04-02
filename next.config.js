@@ -26,6 +26,9 @@ const nextConfig = {
   async headers() {
     return [{ source: '/(.*)', headers: corsHeaders }];
   },
+  experimental: {
+    webpackBuildWorker: true,
+  },
 };
 
 module.exports = withMDX(nextConfig);

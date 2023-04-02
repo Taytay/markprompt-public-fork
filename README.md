@@ -37,27 +37,60 @@ Markprompt is built on top of the following stack:
 - [Plain](https://plain.com/) - support chat
 - [Fathom](https://usefathom.com/) - analytics
 
+### Environment variables:
+
+1. In the root of the repo, copy `.env.example` to `.env.local`. You'll be filling in those values in the next steps. **DO NOT CHECK IN .env.local.**
+
 ### Supabase
 
-Supabase is used for storage and auth, and if self-hosting, you will need to set it up on the [Supabase admin console](https://app.supabase.com/).
+You'll need a Supabase account and the [supabase CLI](https://supabase.com/docs/guides/cli). 
+To set up a new Supabase project with this repo, follow these instructions:
+If you haven't already, sign up at Supabase and create a new project.
 
-#### Schema
+1. Clone this repo
+2. `yarn install` (This repo uses yarn)
+3. `yarn run supabase login` (login to the Supabase CLI)
+4. If create a new project.
+5. `yarn run supabase link --project-ref <your-project-id>`
+6. Once the project is created, go to the Project Settings and find the API URL and Public API Key. Put those in `.env.local`
+7. `yarn run supabase start` (starts local development)
 
-The schema is defined in [schema.sql](https://github.com/motifland/markprompt/blob/main/config/schema.sql). Create a Supabase database and paste the content of this file into the SQL editor. Then run the Typescript types generation script using:
+We are just running this for the database support for now.
 
+A note on local Supabase development: Theoeretically, you can use Supabase's local testing environment, but it's got some rough edges, especially with regards to settings and authentication. This needs to be improved.
+
+### Database Schema Migrations
+
+You need to create the local database schema and apply migrations:
+1. `yarn run supabase db reset`
+(The schema is defined as the first migration step in `supabase/migrations/20230401212257_init.sql`.)
+
+2. To update the local types after making a schema change:
 ```sh
-npx supabase gen types typescript --project-id <supabase-project-id> --schema public > types/supabase.ts
+yarn run supabase_create_types_local
 ```
 
-where `<supabase-project-id>` is the id of your Supabase project.
+3. If you make any other changes to the local database schema using migrations, you can apply the migrations to the remote db with:
+```sh
+supabase_db_push_migrations_to_remote
+```
 
-#### Auth provider
+1. If you make REMOTE changes, and want to see what you would need to apply to your LOCAL DB to get it to match, you can run:
+```sh
+yarn run supabase db diff --use-migra --linked
+```
+
+[More information about this workflow can be found here](https://github.com/orgs/supabase/discussions/6366).
+
+### UpStash
+
+Upstash Redis is used for rate limiting. (There is no local substitute for this yet, but this could be made optional later)
+1. Create an account at [Upstash](https://upstash.com/).
+Put the credentials in `.env.local`
+
+### Auth provider
 
 Authentication is handled by Supabase Auth. Follow the [Login with GitHub](https://supabase.com/docs/guides/auth/social-login/auth-github) and [Login with Google](https://supabase.com/docs/guides/auth/social-login/auth-google) guides to set it up.
-
-### Setting environment variables
-
-A sample file containing required environment variables can be found in [example.env](https://github.com/motifland/markprompt/blob/main/example.env). In addition to the keys for the above services, you will need keys for [Upstash](https://upstash.com/) (rate limiting and key-value storage), [Plain.com](https://plain.com) (support chat), and [Fathom](https://usefathom.com/) (analytics).
 
 ## Using the React component
 
@@ -71,7 +104,7 @@ Currently, the Markprompt API has basic protection against misuse when making re
 
 ## Data retention
 
-OpenAI keeps training data for 30 days. Read more: [OpenAI API data usage policies](https://openai.com/policies/api-data-usage-policies).
+OpenAI logs data for "abuse and misuse monitoring purposes for a maximum of 30 days". Read more: [OpenAI API data usage policies](https://openai.com/policies/api-data-usage-policies).
 
 Markprompt keeps the data as long as you need to query it. If you remove a file or delete a project, all associated data will be deleted immediately.
 

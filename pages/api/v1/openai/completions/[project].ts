@@ -256,10 +256,6 @@ Answer (including related code snippets if available):`;
   let allText = fullPrompt;
   let didSendHeader = false;
 
-  console.error(
-    `[COMPLETIONS] [LOAD-EMBEDDINGS] [${projectId}] - No relevant sections found`,
-  );
-
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       'Content-Type': 'application/json',
