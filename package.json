@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "supabase_db_reset": "supabase db reset",
-    "supabase_create_types_local": "supabase gen types typescript --local --schema public > types/supabase.ts"
+    "supabase_db_local_reset": "supabase db reset",
+    "supabase_db_push_migrations_to_remote": "supabase db push",
+    "supabase_create_types_local": "supabase gen types typescript --local --schema public > types/supabase.ts",
+    "supabase": "supabase"
   },
   "dependencies": {
     "@markdoc/markdoc": "^0.2.2",
